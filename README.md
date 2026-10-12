@@ -1,6 +1,18 @@
 # opc-community
 
-OPC（One Person Company）社区首页试岗项目，采用 HTML5、CSS3、JavaScript ES Modules 和 Vite。当前仅完成初始化整理，页面容器为空，尚未实现社区界面和业务交互。
+OPC（One Person Company）社区首页试岗项目，采用 HTML5、CSS3、JavaScript ES Modules 和 Vite。阶段一初始化和阶段二 AI 设计均已完成。第三阶段前端开发尚未开始，页面容器仍为空，网页业务功能尚未实现。
+
+## 当前阶段与设计定稿
+
+- 阶段一：原生 JavaScript + Vite 初始化、目录整理及启动/构建验证已完成。
+- 阶段二：AI 设计生成、迭代与静态 UI 评审已完成。
+- 桌面端定稿：`design/desktop-v3.png`。
+- 移动端定稿：`design/mobile-v2.png`，以约 390px 手机视口为开发目标。
+- 发布弹窗定稿：`design/publish-modal-v1.png`。
+- 历史设计保留：`desktop-v1.png`、`desktop-v2.png`、`mobile-v1.png`。
+- 第三阶段尚未开始：导航、帖子渲染、点赞、发布、搜索、筛选、数据保存等业务功能均未实现。
+
+设计定稿仅代表静态 UI 参考已确定；真实响应式、交互与滚动仍需编码后在浏览器验证。最终规划为 8 条初始 Mock 帖子，通过整页自然纵向滚动浏览，Footer 位于完整列表之后。
 
 ## 本地运行
 
@@ -29,7 +41,7 @@ npm run preview
 | `src/js/storage.js` | 预留 localStorage 读写与异常处理，目前为空 |
 | `src/assets/` | 需要由 Vite 处理的图片等资源 |
 | `public/images/` | 不需要构建处理的静态图片，以 `/images/` 路径引用 |
-| `design/` | 后续设计方案、迭代记录；本轮未生成设计图 |
+| `design/` | 已完成的桌面、移动端和发布弹窗设计图，保留历史迭代版本 |
 | `screenshots/` | 后续桌面、移动端及功能验收截图 |
 | `package.json` | 项目信息、运行脚本和依赖声明，目前仅有 Vite 开发依赖 |
 | `package-lock.json` | 锁定依赖版本，保障安装一致性 |
@@ -38,15 +50,15 @@ npm run preview
 
 `.gitkeep` 仅用于让 Git 保留空目录。`node_modules/` 和 `dist/` 不提交到仓库。
 
-## 推荐开发顺序
+## 第三阶段推荐开发顺序（尚未开始）
 
-1. 确认首页信息结构、视觉方向和桌面/移动端布局，记录设计迭代。
+1. 以 desktop-v3、mobile-v2 和 publish-modal-v1 定稿为参考，梳理页面结构及实现规则。
 2. 实现导航、Hero、话题标签和帖子卡片的静态结构与基础样式。
-3. 在 `data.js` 准备 6–8 条 Mock 帖子，在 `posts.js` 实现渲染。
+3. 在 `data.js` 准备 8 条初始 Mock 帖子，在 `posts.js` 实现渲染。
 4. 完成响应式布局并检查键盘操作、语义与可访问性。
 5. 实现点赞/取消点赞、发布弹窗及表单验证。
 6. 添加搜索、话题筛选，再接入 localStorage 数据保存。
 7. 通过 CSS 变量统一主题，再实现暗色模式。
 8. 进行功能与多尺寸验收，保存截图并更新 AI 协作日志。
 
-本轮没有引入 React、Vue、Tailwind 或额外依赖，没有实现实际社区页面。
+项目保持原生 JavaScript + Vite，没有引入 React、Vue 或 Tailwind。AI 协作日志已收录 P01、P07 的完整原始提示词；其余原始提示词继续待补充，日志证据补齐不等于阶段三已经开始。
