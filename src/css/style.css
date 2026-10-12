@@ -1,0 +1,9 @@
+/* 全局基础样式；社区页面样式将在下一阶段添加。 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
