@@ -116,3 +116,9 @@
   .topic-copy > span { font-size: 10px; }
   .hero-actions .button { padding-inline: 14px; }
 }
+
+@media (max-width: 640px) {
+  .mobile-navigation:not([hidden]) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .notification { bottom: 16px; text-align: center; }
+}
+@media (min-width: 641px) { .mobile-navigation { display: none; } }
