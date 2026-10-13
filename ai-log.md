@@ -1820,3 +1820,40 @@ crypto.randomUUID()
 已修复可复现的普通 HTTP 局域网发布 ID 兼容问题。**后续开发者手机真机回归结果：已通过（2026-10-13）**。开发者已在真实手机上重新访问项目，确认发布功能现在正常可用；同时明确此前已完成的点赞、搜索、话题筛选和 localStorage 刷新持久化等测试均通过。原先“手机发布失败、等待复测”属于修复前的真实历史问题，不是当前未解决问题。手机与电脑之间的帖子和点赞数据不自动同步，是浏览器 localStorage 按来源及设备隔离的预期限制，而非发布修复失败。
 
 未执行 Git commit 或 git push；本轮停止，不进行其他开发。
+
+## GitHub Pages 自动部署协作记录（2026-10-13）
+
+### 本轮目标与范围
+
+开发者要求为 WilliamJoyce1997/opc-community 配置 main 推送后的 GitHub Pages 自动部署，目标为 https://williamjoyce1997.github.io/opc-community/；生产 base 使用 /opc-community/，尽量保持本地开发根路径不变。要求验证安装、构建、preview、资源路径及现有交互，增加 README 说明；不得删除设计或历史日志、增加业务功能、引入框架、大规模重构，或擅自 commit/push。真正上线成功必须由开发者最终验证。
+
+### 检查与配置
+
+- 初始工作区 git status 干净；package.json 已有 dev/build/preview，Vite ^8.3.0，锁定 8.3.4；无需修改依赖或锁文件。
+- 原先没有 vite.config.js，已有旧构建 JS/CSS 使用 /assets/，不适合目标仓库子路径。新增配置：command=build 或 isPreview 时 base=/opc-community/，开发 base=/。按执行方式而非仅 mode 分支，避免 preview 意外使用根路径。
+- 新增 .github/workflows/deploy.yml：main push 与 workflow_dispatch；Node 24、npm ci、npm run build、官方 configure/upload/deploy Pages Actions。构建仅 contents: read；部署声明 pages: write 和 id-token: write，依赖构建，绑定 github-pages 环境，且仅 main 可部署。并发组 pages 不取消正在部署的运行。Actions SHA 来自本轮查阅的 Vite 官方部署示例。
+- index.html 的 /src/main.js 由 Vite 改写；JS/CSS 导入为相对模块引用。导航/SVG 为页内锚点、favicon 为 data URI；public/images 与 src/assets 仅有 .gitkeep，没有运行时 public 地址，因此无需向业务代码添加 BASE_URL。本次没有修改 index.html 或 src/。
+- README 增加部署、资源引用、localStorage 来源边界与开发者操作说明；在线预览明确标为待验证。
+- 执行计划记录于 docs/superpowers/plans/2026-10-13-github-pages.md。按用户授权完成可逆配置，不进行额外计划审批或提交；验证脚本为临时文件，不新增项目测试依赖。
+
+### 实际本地验证
+
+- npm ci：退出码 0，安装 15 个包，审计报告 0 漏洞；环境 Node 24.19.0、npm 11.17.0。
+- npm run build：退出码 0，Vite 8.3.4 转换 11 个模块。
+- dist/index.html 的 JS 为 /opc-community/assets/index-Ba3etdnU.js，CSS 为 /opc-community/assets/index-Xk45XPG8.css。
+- npm run preview -- --host 127.0.0.1 --port 4175 --strictPort：服务地址 http://127.0.0.1:4175/opc-community/。
+- npm run dev -- --host 127.0.0.1 --port 5177 --strictPort：服务地址 http://127.0.0.1:5177/，开发根路径保持正常。
+- 隔离 Edge 自动回归三个场景：开发桌面 1440px、生产预览桌面 1440px、生产预览手机宽度 390px。每个场景均验证初始八帖、点赞数加一/选中状态及刷新保留、作者搜索、无匹配空状态、话题筛选和组合搜索、全部帖子保留搜索、发布重置筛选/搜索并置顶新帖、九帖刷新保留和新帖点赞持久化。
+- 桌面锚点导航正常；390px 移动菜单展开/关闭及锚点跳转正常，跳转仍保持原子路径。存储键 opc-community:state:v1 与 version=1 不变。
+- 三个场景均无横向溢出、Console error/pageerror、requestfailed 或 HTTP >=400 的页面资源请求；生产 JS/CSS 均实际通过 /opc-community/assets/ 加载，无资源 404。
+- git diff --check 通过。日志以追加方式写入，原有记录和设计图保留。
+
+### 配置完成与上线成功的区别
+
+**配置与本地验证：完成。GitHub Actions 实际部署及最终在线访问：待开发者验证。** 本轮没有运行远端工作流、修改仓库 Pages 设置或执行 git commit/git push，不能宣称站点已上线。
+
+开发者下一步：Settings → Pages 选择 GitHub Actions；确认 Actions 策略、Pages/OIDC 权限及 github-pages 环境允许 main（如需审批则批准）；审查后自行提交推送 main；检查 build/deploy 成功，再访问目标 URL 验证资源与交互。待真实验证后记录部署结果并更新 README 待验证标记。
+
+本轮 390px 为桌面 Edge 的手机宽度模拟，不冒充新一轮手机真机线上测试。localhost 到 GitHub Pages 是来源变化，localStorage 不自动迁移；同域不同子路径共享来源存储，现有唯一键保留。页面发布仍为本地演示，不提供跨设备或跨用户数据同步。
+
+最终独立只读复核：Vite 路径、main 触发、构建/部署依赖、权限及待验证文档状态均核对通过，未发现阻断问题；未修改业务文件，也未提交或推送。

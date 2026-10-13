@@ -2,7 +2,7 @@
 
 OPC（One Person Company，一人公司）中文交流社区首页试岗项目，面向独立开发者、AI 创业者、自由职业者及一人公司经营者。以“一个人，也能是一家公司”为主题，完成 AI 设计迭代、原生前端实现、核心功能与回归验证。
 
-当前状态：初始化、AI 设计和核心前端开发已完成，进入最终交付验收。桌面参考 desktop-v3，移动参考 mobile-v2，发布弹窗参考 publish-modal-v1；本仓库未进行在线部署。
+当前状态：初始化、AI 设计和核心前端开发已完成，进入最终交付验收。桌面参考 desktop-v3，移动参考 mobile-v2，发布弹窗参考 publish-modal-v1；GitHub Pages 自动部署配置已完成，本地验证已通过；实际线上部署与访问待开发者验证。
 
 ## 技术栈与运行
 
@@ -25,6 +25,30 @@ npm run preview
 `dev` 用于开发与热更新，`build` 生成 `dist/`，`preview` 本地预览构建结果，并非正式托管服务。请使用终端显示的地址；本轮验收开发地址为 `http://127.0.0.1:5176/`。发布功能使用兼容安全上下文与普通局域网 HTTP 环境的帖子 ID 生成方案：优先使用 crypto.randomUUID()，不可用时通过 crypto.getRandomValues() 生成 UUID v4。已完成 Windows 电脑 localhost 和 Android 手机局域网访问测试，发布功能均正常。
 
 项目使用 Vite 开发服务器运行，不建议直接双击 index.html 文件。手机与电脑的数据分别保存在各自浏览器的 localStorage 中，不支持跨设备同步。
+
+## GitHub Pages 自动部署
+
+在线预览：[https://williamjoyce1997.github.io/opc-community/](https://williamjoyce1997.github.io/opc-community/) — **待验证**。当前仅完成配置和本地验证，尚未确认 GitHub Actions 运行或站点上线成功。
+
+`vite.config.js` 按执行方式设置基础路径：`npm run dev` 保持 `/`，`npm run build` 和 `npm run preview` 使用 `/opc-community/`。因此生产 JS/CSS 会从 `/opc-community/assets/` 加载。预览默认打开 `http://localhost:4173/opc-community/`；端口被占用时以终端输出为准，不要遗漏仓库子路径。
+
+`.github/workflows/deploy.yml` 在推送到 `main` 时自动运行，也支持 Actions 页手动触发。构建任务使用 Node.js 24（满足现有 Vite 要求）、锁文件和 npm 缓存，依次执行 `npm ci`、`npm run build`，通过官方 Pages Actions 上传 `dist/`；部署任务依赖构建成功，使用 `github-pages` 环境及 `pages: write`、`id-token: write` 权限。仅 main 可部署，部署并发串行处理，避免中断正在进行的部署。Action 固定到官方示例的完整提交 SHA，升级时应核对官方版本。
+
+开发者需要执行：
+
+1. 在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
+2. 确认 **Settings → Actions → General** 允许工作流使用这些官方 Actions；如组织限制 token 权限或环境部署，确保允许工作流声明的 Pages/OIDC 权限，并允许 `main` 部署到 `github-pages` 环境。如环境要求审批，批准对应部署。
+3. 审查本轮修改，由开发者自行提交并推送到 `main`（保留并提交 `package-lock.json`）；本轮 Codex 未执行 commit 或 push。
+4. 在 **Actions → Deploy to GitHub Pages** 查看 build 和 deploy 均成功；如需重跑，在 main 上选择 **Run workflow**。
+5. 访问上方预览地址，检查资源请求无 404，以及导航、帖子、点赞、发布、搜索、筛选和刷新保存。确认后再把“待验证”改为“已验证”，并在 `ai-log.md` 记录真实部署与访问结果。
+
+资源审查：`index.html` 的 `/src/main.js` 为 Vite 入口，构建会自动改写；CSS/JS 使用模块导入。页面导航和 SVG 图标使用 `#...`，favicon 为 data URI。`public/images/` 和 `src/assets/` 当前只有预留文件，没有需要修正的 public 地址。未来从 JavaScript 引用 `public/images/example.png` 时使用 `${import.meta.env.BASE_URL}images/example.png`，不要写死 `/images/example.png`，也不要把 `public/` 写入 URL。HTML 中可用 `%BASE_URL%images/example.png`；模块资源优先通过 import 引入。
+
+本轮验证（2026-10-13）：`npm ci`、`npm run build`、`git diff --check` 通过。隔离 Edge 检查开发根路径 `http://127.0.0.1:5177/` 和生产预览 `http://127.0.0.1:4175/opc-community/`；生产桌面 1440px、手机宽度 390px 下的渲染、点赞、发布、搜索、话题筛选、导航及 localStorage 刷新持久化均通过，未发现 Console/pageerror 异常、请求失败或资源 404。手机宽度检查为桌面浏览器模拟，不等同于本轮手机真机线上测试。
+
+localStorage 的键名和结构未变。它按来源（协议、域名、端口）隔离，子路径本身不隔离存储；localhost 和 GitHub Pages 的帖子/点赞不会自动迁移，发布仍是当前浏览器的本地演示数据。GitHub 上实际运行 Actions、托管访问和 HTTPS 真机回归尚待开发者验证。
+
+参考：[Vite 静态部署](https://vite.dev/guide/static-deploy.html)、[GitHub Pages 自定义工作流](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
 
 ## 已实现功能
 
