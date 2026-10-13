@@ -6,6 +6,22 @@ import { renderPosts, initLikes } from './js/posts.js'
 import { initFilters, filterPosts } from './js/filters.js'
 import { initModal } from './js/modal.js'
 
+// randomUUID 仅在安全上下文可用；getRandomValues 也支持普通局域网 HTTP。
+export function createPostId(cryptoApi = globalThis.crypto) {
+  if (typeof cryptoApi?.randomUUID === 'function') {
+    try { return `user-${cryptoApi.randomUUID()}` } catch { /* 不可用时继续安全随机回退。 */ }
+  }
+  if (typeof cryptoApi?.getRandomValues !== 'function') {
+    throw new Error('当前浏览器不支持安全随机数，无法生成帖子 ID。')
+  }
+  const bytes = cryptoApi.getRandomValues(new Uint8Array(16))
+  // UUID v4：版本与变体占 6 位，其余 122 位保留为安全随机位。
+  bytes[6] = (bytes[6] & 0x0f) | 0x40
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('')
+  return `user-${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
+}
+
 const notification = document.querySelector('#notification')
 let notificationTimer
 function notify(message) {
@@ -59,7 +75,7 @@ initLikes(container, id => {
 initModal(draft => {
   refreshState()
   const post = {
-    id: `user-${crypto.randomUUID()}`, author: '我', avatar: { label: '我', tone: 'indigo' },
+    id: createPostId(), author: '我', avatar: { label: '我', tone: 'indigo' },
     publishedAt: new Date().toISOString(), title: draft.title, content: draft.content,
     tags: draft.tags.map(normalizeTopic), likes: 0,
   }
