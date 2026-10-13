@@ -52,3 +52,21 @@ export function saveState(state, onWarning = () => {}, storage) {
     return false
   }
 }
+
+// 主题使用独立键，保留帖子存储版本与结构。
+export const THEME_STORAGE_KEY = 'opc-community:theme:v1'
+export function loadTheme() {
+  try {
+    const value = globalThis.localStorage.getItem(THEME_STORAGE_KEY)
+    return value === 'light' || value === 'dark' ? value : null
+  } catch { return null }
+}
+export function saveTheme(theme, onWarning = () => {}) {
+  try {
+    globalThis.localStorage.setItem(THEME_STORAGE_KEY, theme)
+    return true
+  } catch {
+    onWarning('主题已切换，但本地保存不可用，刷新后可能恢复系统主题。')
+    return false
+  }
+}

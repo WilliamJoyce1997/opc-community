@@ -2,7 +2,7 @@
 
 OPC（One Person Company，一人公司）中文交流社区首页试岗项目，面向独立开发者、AI 创业者、自由职业者及一人公司经营者。以“一个人，也能是一家公司”为主题，完成 AI 设计迭代、原生前端实现、核心功能与回归验证。
 
-当前状态：初始化、AI 设计和核心前端开发已完成，进入最终交付验收。桌面参考 desktop-v3，移动参考 mobile-v2，发布弹窗参考 publish-modal-v1；GitHub Pages 自动部署配置已完成，本地验证已通过；实际线上部署与访问待开发者验证。
+当前状态：初始化、AI 设计和核心前端开发已完成，进入最终交付验收。桌面参考 desktop-v3，移动参考 mobile-v2，发布弹窗参考 publish-modal-v1；GitHub Pages 部署已完成（开发者在本轮任务中说明）；暗色模式已实现并于 2026-10-13 通过开发者亲自测试验收；本次确认未注明更新版线上部署情况。
 
 ## 技术栈与运行
 
@@ -26,9 +26,21 @@ npm run preview
 
 项目使用 Vite 开发服务器运行，不建议直接双击 index.html 文件。手机与电脑的数据分别保存在各自浏览器的 localStorage 中，不支持跨设备同步。
 
+### 局域网与移动端调试
+
+如需在同一局域网内使用手机访问开发中的网站，可在项目根目录执行：
+
+```sh
+npm run dev -- --host 0.0.0.0
+```
+
+该命令使 Vite 开发服务器监听所有网络接口。手机与电脑连接同一局域网后，可通过终端显示的 Network 地址访问，例如 `http://192.168.1.100:5173/`（示例地址，实际 IP 和端口以运行环境为准）。
+
+如果无法访问，请检查 Windows 防火墙、电脑局域网 IP、网络隔离设置及 Vite 实际监听端口。该方式仅用于可信局域网内的开发测试，不建议直接暴露到公网。
+
 ## GitHub Pages 自动部署
 
-在线预览：[https://williamjoyce1997.github.io/opc-community/](https://williamjoyce1997.github.io/opc-community/) — **待验证**。当前仅完成配置和本地验证，尚未确认 GitHub Actions 运行或站点上线成功。
+在线预览：[https://williamjoyce1997.github.io/opc-community/](https://williamjoyce1997.github.io/opc-community/) — 开发者已说明项目完成部署；本轮主题更新仅在本地生产预览验证，尚未推送至线上。
 
 `vite.config.js` 按执行方式设置基础路径：`npm run dev` 保持 `/`，`npm run build` 和 `npm run preview` 使用 `/opc-community/`。因此生产 JS/CSS 会从 `/opc-community/assets/` 加载。预览默认打开 `http://localhost:4173/opc-community/`；端口被占用时以终端输出为准，不要遗漏仓库子路径。
 
@@ -46,11 +58,13 @@ npm run preview
 
 本轮验证（2026-10-13）：`npm ci`、`npm run build`、`git diff --check` 通过。隔离 Edge 检查开发根路径 `http://127.0.0.1:5177/` 和生产预览 `http://127.0.0.1:4175/opc-community/`；生产桌面 1440px、手机宽度 390px 下的渲染、点赞、发布、搜索、话题筛选、导航及 localStorage 刷新持久化均通过，未发现 Console/pageerror 异常、请求失败或资源 404。手机宽度检查为桌面浏览器模拟，不等同于本轮手机真机线上测试。
 
-localStorage 的键名和结构未变。它按来源（协议、域名、端口）隔离，子路径本身不隔离存储；localhost 和 GitHub Pages 的帖子/点赞不会自动迁移，发布仍是当前浏览器的本地演示数据。GitHub 上实际运行 Actions、托管访问和 HTTPS 真机回归尚待开发者验证。
+localStorage 的键名和结构未变。它按来源（协议、域名、端口）隔离，子路径本身不隔离存储；localhost 和 GitHub Pages 的帖子/点赞不会自动迁移，发布仍是当前浏览器的本地演示数据。历史配置阶段未验证远端上线；开发者已在本轮说明项目部署完成。暗色页面已通过开发者人工测试；本次未提供具体浏览器、设备或访问地址，不据此宣称已完成 HTTPS 真机专项回归。
 
 参考：[Vite 静态部署](https://vite.dev/guide/static-deploy.html)、[GitHub Pages 自定义工作流](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
 
 ## 已实现功能
+
+- 暗色模式（可选加分功能）：桌面/手机导航 SVG 月亮与太阳按钮，首次跟随系统主题，手动选择单独保存；刷新保留，未手动选择时响应系统变化，支持键盘和减少动画偏好。
 
 - 桌面和手机响应式布局；手机精简导航、两列话题、两行搜索工具栏和纵向帖子；整页自然滚动，Footer 位于完整列表后。
 - 8 条固定 ID 的中文初始 Mock 帖子，包含作者、头像占位、发布时间、标题、正文、标签及点赞数量。
@@ -82,7 +96,8 @@ opc-community/
 │   │   ├── posts.js
 │   │   ├── modal.js
 │   │   ├── filters.js
-│   │   └── storage.js
+│   │   ├── storage.js
+│   │   └── theme.js
 │   └── assets/
 ├── public/images/
 ├── design/
@@ -97,7 +112,8 @@ opc-community/
 | `src/js/posts.js` | 安全创建卡片、空状态、点赞事件代理和按钮更新 |
 | `src/js/modal.js` | 弹窗打开关闭、字数/空白/话题校验与发布回调 |
 | `src/js/filters.js` | 搜索与话题组合过滤、下拉键盘/焦点、卡片和菜单同步 |
-| `src/js/storage.js` | 稳定存储键、版本与字段校验、去重、异常回退 |
+| `src/js/storage.js` | 帖子存储校验/异常回退，以及独立主题键的安全读写 |
+| `src/js/theme.js` | 主题切换、动态无障碍标签、系统偏好与跨标签同步 |
 | `src/css/style.css` | 全局变量、桌面组件、交互状态、焦点及弹层样式 |
 | `src/css/responsive.css` | 手机和中尺寸重排、移动菜单和下拉定位 |
 | `src/assets/`、`public/images/` | 预留独立资源位置，目前没有外部人物插画或头像 |
@@ -168,6 +184,14 @@ Codex 在隔离 Edge 会话执行了八帖、点赞/快速切换/刷新、发布
 
 本机验证宽度：375、390、768、1024、1440px；页面无横向溢出，弹窗宽度适配，未发现 Console 异常或失败资源请求。`npm run build` 和 `git diff --check` 已通过。测试使用现有运行环境的临时脚本，仓库未提供 `npm test` 命令。
 
+## 暗色模式与本轮验证
+
+主题由 `document.documentElement.dataset.theme` 控制。HTML 头部在主体绘制前读取偏好；组件沿用 CSS 变量，仅覆盖暗色值。主题键 `opc-community:theme:v1` 只保存 `light` 或 `dark`，不改写帖子/点赞的 `opc-community:state:v1`。存储不可用时仍可切换，并提示刷新可能恢复系统主题。没有主题偏好时跟随系统，手动选择后以用户选择为准。
+
+隔离 Edge 在生产子路径 `/opc-community/` 下验证浅色/暗色切换、刷新、首次系统偏好、后续系统变化、键盘、存储不可用回退，以及暗色下发布/点赞/搜索/话题组合与原有数据保留；320、375、390、768、1024、1440px 无横向溢出，资源与 Console 检查通过。浏览器模拟不等同于手机真机。上述为 Codex 自动化结果。2026-10-13，开发者补充确认：“我已经亲自测试了暗色页面，一切正常，通过。”暗色模式人工验收已通过；本次确认未列出具体设备、浏览器和访问地址。Codex 未执行提交、推送或重新部署。
+
+[暗色桌面运行截图](screenshots/dark-home-1440.png) · [暗色手机运行截图](screenshots/dark-home-390.png) · [桌面弹窗](screenshots/dark-modal-1440.png) · [手机弹窗](screenshots/dark-modal-390.png)。截图包含隔离回归时发布的测试帖，历史截图保留。
+
 ## 已知边界、取舍与待确认建议
 
 - localStorage 是当前浏览器、当前来源的本地演示存储，不支持多设备同步。不同端口也是不同来源；切换预览端口不会自动迁移旧帖。清除站点数据、无痕窗口关闭或浏览器策略可能丢失数据。
@@ -176,7 +200,7 @@ Codex 在隔离 Edge 会话执行了八帖、点赞/快速切换/刷新、发布
 - Hero 与头像仍为明确占位方案，并非逐像素复制设计稿。进一步替换独立插画、提升小字号及统一更细的间距属于非阻断视觉优化，待人工确认。
 - 完整读屏软件、真实 iOS/Safari/Firefox 和手机软键盘未实测；目前不能宣称全平台可访问性验收完成。请交付前人工确认这些环境与视觉效果。
 - 搜索实时重建当前列表，适合小规模演示；初始 Mock 不反复写入存储，个人点赞由基础数加个人状态计算。字数按 Unicode 码点计，去掉首尾空白后校验。
-- 登录和活动仅显示说明，不提供真实认证或活动页面。真实后端、数据库、在线发布、支付、暗色模式、收藏和复杂动画均在本次项目范围之外。
+- 登录和活动仅显示说明，不提供真实认证或活动页面。真实后端、数据库、在线发布、支付、收藏和复杂动画均在本次项目范围之外。
 
 ## 交付检查
 

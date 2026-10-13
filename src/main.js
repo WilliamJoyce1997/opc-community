@@ -5,6 +5,7 @@ import { STORAGE_KEY, loadState, saveState } from './js/storage.js'
 import { renderPosts, initLikes } from './js/posts.js'
 import { initFilters, filterPosts } from './js/filters.js'
 import { initModal } from './js/modal.js'
+import { initTheme } from './js/theme.js'
 
 // randomUUID 仅在安全上下文可用；getRandomValues 也支持普通局域网 HTTP。
 export function createPostId(cryptoApi = globalThis.crypto) {
@@ -30,6 +31,8 @@ function notify(message) {
   notification.hidden = false
   notificationTimer = setTimeout(() => { notification.hidden = true }, 6000)
 }
+
+initTheme(notify)
 
 const state = loadState(notify)
 const likedIds = new Set(state.likedIds)

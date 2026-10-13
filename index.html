@@ -6,6 +6,17 @@
     <meta name="description" content="OPC Community，面向独立开发者、AI 创业者与一人公司的交流社区。" />
     <meta name="theme-color" content="#4238ff" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2711%27%20fill%3D%27none%27%20stroke%3D%27%234238ff%27%20stroke-width%3D%278%27%2F%3E%3C%2Fsvg%3E" />
+    <!-- 首次绘制前设置主题；独立键不影响帖子与点赞。 -->
+    <script>
+      (() => {
+        let saved
+        try { saved = localStorage.getItem('opc-community:theme:v1') } catch {}
+        const theme = saved === 'light' || saved === 'dark' ? saved :
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        document.documentElement.dataset.theme = theme
+        document.documentElement.style.colorScheme = theme
+      })()
+    </script>
     <title>OPC Community · 一个人，也能是一家公司</title>
   </head>
   <body>
@@ -13,6 +24,8 @@
     <!-- 独立的内联 SVG 图标，不引用或裁切设计稿。 -->
     <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
+        <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20.5 14A9 9 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z"/></symbol>
+        <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
         <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18" /></symbol>
         <symbol id="icon-bot" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M12 3v4M1 12v4m22-4v4M8 16h8"/><circle cx="8" cy="12" r=".5"/><circle cx="16" cy="12" r=".5"/></symbol>
         <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><path d="M2 12h20M4 6h16M4 18h16"/></symbol>
@@ -39,6 +52,7 @@
           </nav>
           <div class="header-actions">
             <button class="login-button" type="button" data-notice="演示项目暂不提供登录功能">登录</button>
+            <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到暗色模式"><svg class="icon theme-moon" aria-hidden="true"><use href="#icon-moon"/></svg><svg class="icon theme-sun" aria-hidden="true"><use href="#icon-sun"/></svg></button>
             <button class="button button-primary header-publish" type="button" data-open-publish>发布</button>
             <button class="icon-button mobile-menu" type="button" aria-label="打开或关闭移动菜单" aria-controls="mobile-navigation" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg></button>
           </div>
