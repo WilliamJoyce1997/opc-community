@@ -84,7 +84,17 @@
         <section id="community" class="community-section" aria-labelledby="community-title">
           <div class="community-toolbar">
             <h2 id="community-title">社区动态</h2>
-            <button class="filter-button" type="button" title="显示全部话题" aria-pressed="true">全部帖子<svg class="icon" aria-hidden="true"><use href="#icon-chevron"/></svg></button>
+            <div class="filter-dropdown">
+              <button id="topic-filter-button" class="filter-button" type="button" title="筛选话题" aria-haspopup="menu" aria-expanded="false" aria-controls="topic-filter-menu"><span data-filter-label>全部帖子</span><svg class="icon" aria-hidden="true"><use href="#icon-chevron"/></svg></button>
+              <div id="topic-filter-menu" class="filter-menu" role="menu" aria-labelledby="topic-filter-button" hidden>
+                <button type="button" role="menuitemradio" aria-checked="true" tabindex="-1" data-topic="">全部帖子</button>
+                <button type="button" role="menuitemradio" aria-checked="false" tabindex="-1" data-topic="独立开发">独立开发</button>
+                <button type="button" role="menuitemradio" aria-checked="false" tabindex="-1" data-topic="AI 工具">AI 工具</button>
+                <button type="button" role="menuitemradio" aria-checked="false" tabindex="-1" data-topic="出海">出海</button>
+                <button type="button" role="menuitemradio" aria-checked="false" tabindex="-1" data-topic="增长">增长</button>
+                <button type="button" role="menuitemradio" aria-checked="false" tabindex="-1" data-topic="远程办公">远程办公</button>
+              </div>
+            </div>
             <div class="search-field"><label class="sr-only" for="post-search">搜索帖子、话题或作者</label><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg><input id="post-search" type="search" placeholder="搜索帖子、话题或作者"/></div>
           </div>
           <p id="results-status" class="preview-note" role="status" aria-live="polite"></p>

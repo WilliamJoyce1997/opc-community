@@ -122,3 +122,8 @@
   .notification { bottom: 16px; text-align: center; }
 }
 @media (min-width: 641px) { .mobile-navigation { display: none; } }
+
+@media (max-width: 640px) {
+  .filter-dropdown { justify-self: end; }
+  .filter-menu { left: auto; right: 0; }
+}

@@ -169,3 +169,15 @@ a.nav-link:active { color: var(--color-brand); background: var(--color-brand-sof
 .mobile-navigation a, .mobile-navigation button { padding: 10px 16px; min-height: 44px; border-radius: 8px; border: 0; background: var(--color-brand-soft); text-align: center; }
 .notification { position: fixed; z-index: 20; left: 50%; bottom: 24px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); padding: 12px 20px; background: #17213b; color: #fff; border-radius: 10px; box-shadow: var(--shadow-card); font-size: 14px; overflow-wrap: anywhere; }
 @media (hover: hover) { .topic-card:hover, .filter-button:hover, .like-button:hover { background: var(--color-brand-soft); } }
+
+/* 话题菜单使用同一筛选状态；层级高于帖子卡片。 */
+.filter-dropdown { position: relative; min-width: 0; justify-self: start; z-index: 5; }
+.filter-button[aria-expanded="true"] { border-color: var(--color-brand); }
+.filter-button[aria-expanded="true"] .icon { transform: rotate(-90deg); }
+.filter-menu { position: absolute; top: calc(100% + 8px); left: 0; width: 200px; max-width: calc(100vw - 32px); padding: 6px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 12px 32px rgb(17 24 39 / 15%); }
+.filter-menu button { display: block; width: 100%; min-height: 44px; padding: 9px 12px; text-align: left; border: 0; border-radius: 7px; background: transparent; font-size: 14px; }
+.filter-menu button[aria-checked="true"] { color: var(--color-brand); background: var(--color-brand-soft); font-weight: 700; }
+.filter-menu button[aria-checked="true"]::after { content: '✓'; float: right; }
+.filter-menu button:focus-visible { outline-offset: -3px; background: var(--color-brand-soft); }
+.filter-menu button:active { background: var(--color-brand-soft); }
+@media (hover: hover) { .filter-menu button:hover { background: var(--color-brand-soft); } }
