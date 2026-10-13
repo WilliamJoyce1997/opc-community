@@ -3,10 +3,132 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OPC 社区</title>
+    <meta name="description" content="OPC Community，面向独立开发者、AI 创业者与一人公司的交流社区。" />
+    <meta name="theme-color" content="#4238ff" />
+    <title>OPC Community · 一个人，也能是一家公司</title>
   </head>
   <body>
-    <div id="app"></div>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <!-- 独立的内联 SVG 图标，不引用或裁切设计稿。 -->
+    <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18" /></symbol>
+        <symbol id="icon-bot" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M12 3v4M1 12v4m22-4v4M8 16h8"/><circle cx="8" cy="12" r=".5"/><circle cx="16" cy="12" r=".5"/></symbol>
+        <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><path d="M2 12h20M4 6h16M4 18h16"/></symbol>
+        <symbol id="icon-growth" viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></symbol>
+        <symbol id="icon-laptop" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="1.5"/><path d="M1 21h22l-2-4H3Z"/></symbol>
+        <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+        <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+        <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5"/></symbol>
+        <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></symbol>
+        <symbol id="icon-like" viewBox="0 0 24 24"><path d="M8 10v11H3V10Zm0 0 4-8c3 0 3 2 2 7h6a2 2 0 0 1 2 2l-2 8a2 2 0 0 1-2 2H8"/></symbol>
+        <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+        <symbol id="icon-bulb" viewBox="0 0 24 24"><path d="M9 18h6m-6 3h6M8 14a7 7 0 1 1 8 0l-1 2H9Z"/></symbol>
+      </defs>
+    </svg>
+
+    <div id="app">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="#main-content" aria-label="OPC Community 首页"><span class="brand-mark" aria-hidden="true"></span><span>OPC Community</span></a>
+          <nav class="desktop-nav" aria-label="主导航">
+            <a class="nav-link" href="#community">发现</a>
+            <a class="nav-link" href="#topics">话题</a>
+            <button class="nav-link" type="button" disabled title="活动功能待实现">活动</button>
+          </nav>
+          <div class="header-actions">
+            <button class="login-button" type="button" disabled title="登录功能待实现">登录</button>
+            <button class="button button-primary header-publish" type="button" disabled aria-describedby="static-status" title="发布功能待实现">发布</button>
+            <button class="icon-button mobile-menu" type="button" disabled aria-label="移动菜单（待实现）"><svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg></button>
+          </div>
+        </div>
+      </header>
+
+      <main id="main-content" class="container main-content">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <h1 id="hero-title"><span class="hero-opening">一个人，</span><span>也能是<span class="text-brand">一家公司</span></span></h1>
+            <p class="hero-subtitle">连接独立创造者，分享经验与灵感</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#community">探索社区<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+              <button class="button button-outline" type="button" disabled aria-describedby="static-status" title="发布功能待实现">发布动态</button>
+            </div>
+          </div>
+          <!-- 简洁独立占位组件；后续可替换为独立 Hero 插画资源。 -->
+          <div class="hero-art" role="img" aria-label="独立工作台插画占位：电脑与创意图标">
+            <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+            <div class="art-badge badge-idea"><svg class="icon" aria-hidden="true"><use href="#icon-bulb"/></svg><span>独立思考<br/>创造价值</span></div>
+            <div class="art-badge badge-growth"><svg class="icon" aria-hidden="true"><use href="#icon-growth"/></svg><span>从想法<br/>到产品</span></div>
+            <div class="workspace-screen"><div class="screen-toolbar"><i></i><i></i><i></i></div><svg class="screen-code icon" aria-hidden="true"><use href="#icon-code"/></svg><span class="screen-line"></span><span class="screen-line short"></span></div>
+            <div class="workspace-base"></div><div class="workspace-desk"></div>
+          </div>
+        </section>
+
+        <section id="topics" class="topics-section" aria-labelledby="topics-title">
+          <div class="section-heading"><h2 id="topics-title">热门话题</h2><button class="view-all" type="button" disabled title="话题浏览待实现">查看全部<svg class="icon" aria-hidden="true"><use href="#icon-chevron"/></svg></button></div>
+          <div class="topic-grid">
+            <button class="topic-card" type="button" disabled aria-label="独立开发，5245 条讨论，筛选待实现"><span class="topic-icon"><svg class="icon" aria-hidden="true"><use href="#icon-code"/></svg></span><span class="topic-copy"><strong>独立开发</strong><span>5245 条讨论</span></span><svg class="icon topic-arrow" aria-hidden="true"><use href="#icon-chevron"/></svg></button>
+            <button class="topic-card" type="button" disabled aria-label="AI 工具，8921 条讨论，筛选待实现"><span class="topic-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bot"/></svg></span><span class="topic-copy"><strong>AI 工具</strong><span>8921 条讨论</span></span><svg class="icon topic-arrow" aria-hidden="true"><use href="#icon-chevron"/></svg></button>
+            <button class="topic-card" type="button" disabled aria-label="出海，4168 条讨论，筛选待实现"><span class="topic-icon"><svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg></span><span class="topic-copy"><strong>出海</strong><span>4168 条讨论</span></span><svg class="icon topic-arrow" aria-hidden="true"><use href="#icon-chevron"/></svg></button>
+            <button class="topic-card" type="button" disabled aria-label="增长，3782 条讨论，筛选待实现"><span class="topic-icon"><svg class="icon" aria-hidden="true"><use href="#icon-growth"/></svg></span><span class="topic-copy"><strong>增长</strong><span>3782 条讨论</span></span><svg class="icon topic-arrow" aria-hidden="true"><use href="#icon-chevron"/></svg></button>
+            <button class="topic-card" type="button" disabled aria-label="远程办公，3201 条讨论，筛选待实现"><span class="topic-icon"><svg class="icon" aria-hidden="true"><use href="#icon-laptop"/></svg></span><span class="topic-copy"><strong>远程办公</strong><span>3201 条讨论</span></span><svg class="icon topic-arrow" aria-hidden="true"><use href="#icon-chevron"/></svg></button>
+          </div>
+        </section>
+
+        <section id="community" class="community-section" aria-labelledby="community-title">
+          <div class="community-toolbar">
+            <h2 id="community-title">社区动态</h2>
+            <button class="filter-button" type="button" disabled title="帖子筛选待实现">全部帖子<svg class="icon" aria-hidden="true"><use href="#icon-chevron"/></svg></button>
+            <div class="search-field"><label class="sr-only" for="post-search">搜索帖子、话题或作者（待实现）</label><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg><input id="post-search" type="search" placeholder="搜索帖子、话题或作者" disabled aria-describedby="static-status"/></div>
+          </div>
+          <p id="static-status" class="preview-note">静态演示 · 以下 3 条帖子仅用于预览排版，搜索、筛选、点赞与发布暂未开放。话题讨论数为展示示例。</p>
+          <!-- 后续 posts.js 应整体替换此容器内容，使用 data.js 的 8 条初始 Mock 数据，避免重复。 -->
+          <div id="posts-list" class="posts-list" data-content-mode="static-demo">
+            <article class="post-card" aria-labelledby="post-demo-1-title" data-static-demo>
+              <header class="post-author"><span class="avatar avatar-indigo" aria-hidden="true">梁</span><div class="author-meta"><span class="author-name">阿梁</span><span class="post-time">2 小时前</span></div></header>
+              <div class="post-content">
+                <h3 id="post-demo-1-title">从 0 到 1：我如何用 6 个月做出第一个能赚钱的独立产品</h3>
+                <p>分享一下我这半年做独立产品的完整过程：从最初的想法验证、产品设计、技术选型，到上线后的获客和收入情况。一个人也可以做出有真实收入的产品，关键是找到小而美的切入点，并快速迭代。</p>
+                <div class="post-bottom"><ul class="post-tags" aria-label="帖子话题"><li>#独立开发</li><li>#产品设计</li><li>#经验分享</li></ul><button class="like-button" type="button" disabled aria-label="38 个赞，点赞待实现"><svg class="icon" aria-hidden="true"><use href="#icon-like"/></svg><span>38</span></button></div>
+              </div>
+            </article>
+            <article class="post-card" aria-labelledby="post-demo-2-title" data-static-demo>
+              <header class="post-author"><span class="avatar avatar-rose" aria-hidden="true">M</span><div class="author-meta"><span class="author-name">Mira</span><span class="post-time">今天 09:42</span></div></header>
+              <div class="post-content">
+                <h3 id="post-demo-2-title">我常用的 8 个 AI 工具，让一人公司效率提升 10 倍</h3>
+                <p>过去一年我尝试了上百个 AI 工具，这 8 个是我真正长期使用的。覆盖写作、设计、开发、运营等场景，帮我把一个人的工作流程变得更轻量、更高效。</p>
+                <div class="post-bottom"><ul class="post-tags" aria-label="帖子话题"><li>#AI 工具</li><li>#效率提升</li><li>#一人公司</li></ul><button class="like-button" type="button" disabled aria-label="52 个赞，点赞待实现"><svg class="icon" aria-hidden="true"><use href="#icon-like"/></svg><span>52</span></button></div>
+              </div>
+            </article>
+            <article class="post-card" aria-labelledby="post-demo-3-title" data-static-demo>
+              <header class="post-author"><span class="avatar avatar-teal" aria-hidden="true">K</span><div class="author-meta"><span class="author-name">老 K</span><span class="post-time">昨天 18:20</span></div></header>
+              <div class="post-content">
+                <h3 id="post-demo-3-title">从国内到海外：一个人做产品的出海实践与思考</h3>
+                <p>过去一年，我的产品有 70% 用户来自海外市场。这里分享我在市场选择、本地化、获客渠道和支付接入上的实践经验，以及踩过的坑和得到的启发。</p>
+                <div class="post-bottom"><ul class="post-tags" aria-label="帖子话题"><li>#出海</li><li>#独立开发</li><li>#市场增长</li></ul><button class="like-button" type="button" disabled aria-label="19 个赞，点赞待实现"><svg class="icon" aria-hidden="true"><use href="#icon-like"/></svg><span>19</span></button></div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer"><div class="container"><p>OPC Community — 面向独立开发者、AI 创业者与一人公司的交流社区</p><p>© 2026 OPC Community. All rights reserved.</p></div></footer>
+    </div>
+
+    <!-- 默认关闭；下一阶段由 modal.js 接入打开、关闭、校验和保存逻辑。 -->
+    <dialog id="publish-dialog" class="publish-dialog" aria-labelledby="publish-title" aria-describedby="publish-preview-note">
+      <div class="dialog-heading"><h2 id="publish-title">发布动态</h2><button class="icon-button" type="button" disabled aria-label="关闭发布弹窗（待实现）"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+      <p id="publish-preview-note" class="dialog-note">静态表单预览，提交与话题选择暂未开放。</p>
+      <form id="publish-form">
+        <fieldset disabled class="publish-fields"><legend class="sr-only">发布动态表单（待实现）</legend>
+          <div class="form-field"><label for="publish-post-title">标题</label><input id="publish-post-title" name="title" type="text" placeholder="请输入标题"/></div>
+          <div class="form-field"><label for="publish-post-content">内容</label><textarea id="publish-post-content" name="content" rows="5" placeholder="分享你的想法、经验或问题…"></textarea></div>
+          <fieldset class="topic-options"><legend>选择话题</legend><div class="topic-chips"><label class="topic-chip"><input type="checkbox" name="topics" value="独立开发"/><span>独立开发</span></label><label class="topic-chip"><input type="checkbox" name="topics" value="AI 工具"/><span>AI 工具</span></label><label class="topic-chip"><input type="checkbox" name="topics" value="出海"/><span>出海</span></label><label class="topic-chip"><input type="checkbox" name="topics" value="增长"/><span>增长</span></label><label class="topic-chip"><input type="checkbox" name="topics" value="远程办公"/><span>远程办公</span></label></div><p class="field-hint">最多选择 3 个话题；选择限制将在后续接入。</p></fieldset>
+        </fieldset>
+        <div class="dialog-actions"><span class="field-hint">分享具体的想法，便于社区交流</span><div><button class="button button-outline" type="button" disabled>取消</button><button class="button button-primary" type="button" disabled>发布</button></div>
+              </div>
+      </form>
+    </dialog>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
