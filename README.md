@@ -22,7 +22,9 @@ npm run build
 npm run preview
 ```
 
-`dev` 用于开发与热更新，`build` 生成 `dist/`，`preview` 本地预览构建结果，并非正式托管服务。请使用终端显示的地址；本轮验收开发地址为 `http://127.0.0.1:5176/`。发布使用 `crypto.randomUUID()`，建议通过 localhost 或 HTTPS 运行，不要直接双击 HTML 文件。
+`dev` 用于开发与热更新，`build` 生成 `dist/`，`preview` 本地预览构建结果，并非正式托管服务。请使用终端显示的地址；本轮验收开发地址为 `http://127.0.0.1:5176/`。发布功能使用兼容安全上下文与普通局域网 HTTP 环境的帖子 ID 生成方案：优先使用 crypto.randomUUID()，不可用时通过 crypto.getRandomValues() 生成 UUID v4。已完成 Windows 电脑 localhost 和 Android 手机局域网访问测试，发布功能均正常。
+
+项目使用 Vite 开发服务器运行，不建议直接双击 index.html 文件。手机与电脑的数据分别保存在各自浏览器的 localStorage 中，不支持跨设备同步。
 
 ## 已实现功能
 
