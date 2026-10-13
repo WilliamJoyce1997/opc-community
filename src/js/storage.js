@@ -20,7 +20,7 @@ export function validateStoredPost(value) {
   }
 }
 
-export function loadState(onWarning = () => {}, storage) {
+export function loadState(onWarning = () => {}, storage, fallbackState = emptyState()) {
   try {
     // localStorage 的 getter 本身也可能抛异常，因此在 try 内访问。
     const raw = (storage ?? globalThis.localStorage).getItem(STORAGE_KEY)
@@ -38,8 +38,8 @@ export function loadState(onWarning = () => {}, storage) {
     if (posts.length !== parsed.posts.length || likedIds.length !== parsed.likedIds.length) onWarning('部分本地数据无效，已忽略；有效帖子仍保留。')
     return { version: 1, posts, likedIds }
   } catch {
-    onWarning('本地数据无法读取，已加载初始帖子；页面仍可使用。')
-    return emptyState()
+    onWarning('本地数据无法读取，已使用安全回退数据；页面仍可使用。')
+    return fallbackState
   }
 }
 

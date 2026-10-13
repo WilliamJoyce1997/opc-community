@@ -1,7 +1,7 @@
 import './css/style.css'
 import './css/responsive.css'
 import { INITIAL_POSTS, normalizeTopic } from './js/data.js'
-import { loadState, saveState } from './js/storage.js'
+import { STORAGE_KEY, loadState, saveState } from './js/storage.js'
 import { renderPosts, initLikes } from './js/posts.js'
 import { initFilters, filterPosts } from './js/filters.js'
 import { initModal } from './js/modal.js'
@@ -19,10 +19,22 @@ const state = loadState(notify)
 const likedIds = new Set(state.likedIds)
 const container = document.querySelector('#posts-list')
 const allPosts = () => [...state.posts, ...INITIAL_POSTS]
+let storageWritable = true
+function refreshState() {
+  // 保存失败后优先保留本页尚未落盘的操作，不用外部快照覆盖它们。
+  if (!storageWritable) return
+  const latest = loadState(notify, undefined, { version: 1, posts: state.posts, likedIds: [...likedIds] })
+  state.posts = latest.posts
+  likedIds.clear()
+  for (const id of latest.likedIds) likedIds.add(id)
+  state.likedIds = [...likedIds]
+}
 const persist = () => {
   state.likedIds = [...likedIds]
-  return saveState(state, notify)
+  storageWritable = saveState(state, notify)
+  return storageWritable
 }
+
 function render(filterState) {
   const posts = allPosts()
   const visible = filterPosts(posts, filterState)
@@ -36,6 +48,7 @@ function render(filterState) {
 }
 const filters = initFilters(render)
 initLikes(container, id => {
+  refreshState()
   const post = allPosts().find(item => item.id === id)
   if (!post) return null
   if (likedIds.has(id)) likedIds.delete(id)
@@ -44,6 +57,7 @@ initLikes(container, id => {
   return { likes: post.likes + Number(likedIds.has(id)), liked: likedIds.has(id) }
 })
 initModal(draft => {
+  refreshState()
   const post = {
     id: `user-${crypto.randomUUID()}`, author: '我', avatar: { label: '我', tone: 'indigo' },
     publishedAt: new Date().toISOString(), title: draft.title, content: draft.content,
@@ -58,13 +72,31 @@ initModal(draft => {
 
 const menuButton = document.querySelector('.mobile-menu')
 const menu = document.querySelector('#mobile-navigation')
-function closeMenu() { menu.hidden = true; menuButton.setAttribute('aria-expanded', 'false') }
+function closeMenu(restoreFocus = false) {
+  menu.hidden = true
+  menuButton.setAttribute('aria-expanded', 'false')
+  if (restoreFocus) menuButton.focus()
+}
 menuButton.addEventListener('click', () => {
   menu.hidden = !menu.hidden
   menuButton.setAttribute('aria-expanded', String(!menu.hidden))
 })
 menu.addEventListener('click', event => { if (event.target.closest('a, button')) closeMenu() })
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu() })
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !menu.hidden) closeMenu(menu.contains(document.activeElement))
+})
 document.addEventListener('click', event => { if (!menu.contains(event.target) && !menuButton.contains(event.target)) closeMenu() })
 matchMedia('(min-width: 641px)').addEventListener('change', event => { if (event.matches) closeMenu() })
 for (const control of document.querySelectorAll('[data-notice]')) control.addEventListener('click', () => notify(control.dataset.notice))
+
+// 同源标签的顺序操作读取最新状态；localStorage 不提供跨标签事务锁。
+window.addEventListener('storage', event => {
+  if (event.key !== STORAGE_KEY && event.key !== null) return
+  refreshState()
+  const focusedLike = document.activeElement?.dataset.likeId
+  render(filters.getState())
+  if (focusedLike) {
+    const button = [...container.querySelectorAll('[data-like-id]')].find(item => item.dataset.likeId === focusedLike)
+    button?.focus()
+  }
+})
